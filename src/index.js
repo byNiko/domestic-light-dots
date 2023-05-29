@@ -6,9 +6,7 @@ import "./styles.css";
 import * as L from "leaflet";
 import "leaflet.markercluster";
 
-// custom again
 // custom
-import * as SECRETS from "./secrets";
 import { colorList, wavelengthToHSL } from "./convertColors";
 import { tmg } from "./transverseMercatorUTMGrid";
 
