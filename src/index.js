@@ -7,7 +7,7 @@ import * as L from "leaflet";
 import "leaflet.markercluster";
 
 // custom
-import * as SECRETS from "./secrets";
+// import * as SECRETS from "./secrets";
 import { colorList, wavelengthToHSL } from "./convertColors";
 import { tmg } from "./transverseMercatorUTMGrid";
 
@@ -17,12 +17,13 @@ const map = L.map("map", {
   crs: L.CRS.EPSG4326,
   center: [0, 0],
   zoom: 3,
+  maxZoom: 10,
 });
 
 // setup External Locations in geo JSON list
-const geoJSONUrl = `https://api.json-generator.com/templates/${SECRETS.GEO_TOKEN}/data`;
+const geoJSONUrl = `https://api.json-generator.com/templates/${process.env.GEO_TOKEN}/data`;
 const myHeaders = new Headers();
-myHeaders.append("Authorization", `Bearer ${SECRETS.BEARER_TOKEN}`);
+myHeaders.append("Authorization", `Bearer ${process.env.BEARER_TOKEN}`);
 const requestOptions = {
   method: "GET",
   headers: myHeaders,
@@ -115,8 +116,8 @@ function pointToLayer(feature, latlng) {
 // load map providers
 const osm = L.tileLayer(
   // "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-  // `https://api.mapbox.com/styles/v1/byniko/cli60r38c00wa01pz2ckkdtcx/tiles/256/{z}/{x}/{y}@2x?access_token=${SECRETS.MAPBOX_TOKEN}`,
-  // `https://api.mapbox.com/styles/v1/byniko/cli4z3nkl00bq01r62l4b47tw/tiles/256/{z}/{x}/{y}@2x?access_token=${SECRETS.MAPBOX_TOKEN}`,
+  // `https://api.mapbox.com/styles/v1/byniko/cli60r38c00wa01pz2ckkdtcx/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.MAPBOX_TOKEN}`,
+  // `https://api.mapbox.com/styles/v1/byniko/cli4z3nkl00bq01r62l4b47tw/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.MAPBOX_TOKEN}`,
   `http://{s}.tile.cloudmade.com/9c844409f5b845ae93ac38388077f90a/997/256/{z}/{x}/{y}.png`,
   {
     tms: true,
@@ -129,7 +130,7 @@ const osm = L.tileLayer(
     attribution:
       '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }
-).addTo(map);
+);
 
 // transverse mercator Grid
 // let mercatorGrid = L.geoJSON(tmg).addTo(map);
