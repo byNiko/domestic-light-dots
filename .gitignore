@@ -1,2 +1,4 @@
 node-modules
 secrets.js
+.cache
+.cache_bak
