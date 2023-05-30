@@ -5,6 +5,13 @@ body {
 #map {
   height: 100vh;
 }
+
+.icon-registration {
+  font-size: 35px;
+  font-weight: 100;
+  color: orange;
+  /* text-shadow: 1px 1px 1px white; */
+}
 .leaflet-container {
   background-color: rgba(255, 0, 0, 0);
 }

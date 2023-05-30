@@ -17530,20 +17530,7 @@ var process = require("process");
 }));
 
 
-},{"process":"node_modules/process/browser.js"}],"src/secrets.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.MAPBOX_TOKEN = exports.GEO_TOKEN = exports.BEARER_TOKEN = void 0;
-var GEO_TOKEN = "01PnfYABfF7j";
-exports.GEO_TOKEN = GEO_TOKEN;
-var BEARER_TOKEN = "6d8sw0n5fcw3eoxprf9gv3c5cztk6pfy3kjtg071";
-exports.BEARER_TOKEN = BEARER_TOKEN;
-var MAPBOX_TOKEN = "pk.eyJ1IjoiYnluaWtvIiwiYSI6ImNsaTdndm82NTFuZHozZW11bHF2dG03YnkifQ.0xjeiaMscCagf59DBFfXnA";
-exports.MAPBOX_TOKEN = MAPBOX_TOKEN;
-},{}],"src/convertColors.js":[function(require,module,exports) {
+},{"process":"node_modules/process/browser.js"}],"src/convertColors.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34501,13 +34488,13 @@ var tmg = {
 };
 exports.tmg = tmg;
 },{}],"src/index.js":[function(require,module,exports) {
+var define;
 "use strict";
 
 require("leaflet/dist/leaflet.css");
 require("./styles.css");
 var L = _interopRequireWildcard(require("leaflet"));
 require("leaflet.markercluster");
-var SECRETS = _interopRequireWildcard(require("./secrets"));
 var _convertColors = require("./convertColors");
 var _transverseMercatorUTMGrid = require("./transverseMercatorUTMGrid");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -34517,7 +34504,6 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; } // styles
 // libraries
-// custom again
 // custom
 // const setups
 var autoRefresh = false;
@@ -34528,9 +34514,9 @@ var map = L.map("map", {
 });
 
 // setup External Locations in geo JSON list
-var geoJSONUrl = "https://api.json-generator.com/templates/".concat(SECRETS.GEO_TOKEN, "/data");
+var geoJSONUrl = "https://api.json-generator.com/templates/".concat("01PnfYABfF7j", "/data");
 var myHeaders = new Headers();
-myHeaders.append("Authorization", "Bearer ".concat(SECRETS.BEARER_TOKEN));
+myHeaders.append("Authorization", "Bearer ".concat("6d8sw0n5fcw3eoxprf9gv3c5cztk6pfy3kjtg071"));
 var requestOptions = {
   method: "GET",
   headers: myHeaders,
@@ -34617,18 +34603,30 @@ function onEachFeature(feature, layer) {
     if (feature.properties.uuid === clickedId) {}
   }
 }
+var registrationIcon = L.divIcon({
+  html: "+",
+  className: "icon-registration"
+});
+var regArr = [[-90, -180], [90, -180], [-90, 180], [90, 180]];
+for (var i = 0; i < regArr.length; i++) {
+  L.marker(regArr[i], {
+    icon: registrationIcon
+  }).addTo(map);
+}
 function pointToLayer(feature, latlng) {
   // console.log("new feature", feature);
   var m = L.circleMarker(latlng, geojsonMarkerOptions(feature));
   m.bindPopup(makePopup(feature));
   m.dlID = feature.properties.uuid;
   markers.addLayer(m);
+  return m;
   return markers;
 }
+
 // load map providers
 var osm = L.tileLayer( // "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-// `https://api.mapbox.com/styles/v1/byniko/cli60r38c00wa01pz2ckkdtcx/tiles/256/{z}/{x}/{y}@2x?access_token=${SECRETS.MAPBOX_TOKEN}`,
-// `https://api.mapbox.com/styles/v1/byniko/cli4z3nkl00bq01r62l4b47tw/tiles/256/{z}/{x}/{y}@2x?access_token=${SECRETS.MAPBOX_TOKEN}`,
+// `https://api.mapbox.com/styles/v1/byniko/cli60r38c00wa01pz2ckkdtcx/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.MAPBOX_TOKEN}`,
+// `https://api.mapbox.com/styles/v1/byniko/cli4z3nkl00bq01r62l4b47tw/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.MAPBOX_TOKEN}`,
 "http://{s}.tile.cloudmade.com/9c844409f5b845ae93ac38388077f90a/997/256/{z}/{x}/{y}.png", {
   tms: true,
   maxZoom: 3,
@@ -34762,7 +34760,7 @@ map.on("popupopen", /*#__PURE__*/function () {
 //   "USGS Imagery": USGS_USImagery,
 // };
 // L.control.layers(baseMaps).addTo(map);
-},{"leaflet/dist/leaflet.css":"node_modules/leaflet/dist/leaflet.css","./styles.css":"src/styles.css","leaflet":"node_modules/leaflet/dist/leaflet-src.js","leaflet.markercluster":"node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js","./secrets":"src/secrets.js","./convertColors":"src/convertColors.js","./transverseMercatorUTMGrid":"src/transverseMercatorUTMGrid.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"leaflet/dist/leaflet.css":"node_modules/leaflet/dist/leaflet.css","./styles.css":"src/styles.css","leaflet":"node_modules/leaflet/dist/leaflet-src.js","leaflet.markercluster":"node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js","./convertColors":"src/convertColors.js","./transverseMercatorUTMGrid":"src/transverseMercatorUTMGrid.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -34787,7 +34785,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43383" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45587" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
