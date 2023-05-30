@@ -19,9 +19,9 @@ const map = L.map("map", {
 });
 
 // setup External Locations in geo JSON list
-const geoJSONUrl = `https://api.json-generator.com/templates/${SECRETS.GEO_TOKEN}/data`;
+const geoJSONUrl = `https://api.json-generator.com/templates/${process.env.GEO_TOKEN}/data`;
 const myHeaders = new Headers();
-myHeaders.append("Authorization", `Bearer ${SECRETS.BEARER_TOKEN}`);
+myHeaders.append("Authorization", `Bearer ${process.env.BEARER_TOKEN}`);
 const requestOptions = {
   method: "GET",
   headers: myHeaders,
@@ -103,19 +103,35 @@ function onEachFeature(feature, layer) {
   }
 }
 
+const registrationIcon = L.divIcon({
+  html: "+",
+  className: "icon-registration",
+});
+const regArr = [
+  [-90, -180],
+  [90, -180],
+  [-90, 180],
+  [90, 180],
+];
+for (let i = 0; i < regArr.length; i++) {
+  L.marker(regArr[i], { icon: registrationIcon }).addTo(map);
+}
+
 function pointToLayer(feature, latlng) {
   // console.log("new feature", feature);
   var m = L.circleMarker(latlng, geojsonMarkerOptions(feature));
   m.bindPopup(makePopup(feature));
   m.dlID = feature.properties.uuid;
   markers.addLayer(m);
+  return m;
   return markers;
 }
+
 // load map providers
 const osm = L.tileLayer(
   // "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-  // `https://api.mapbox.com/styles/v1/byniko/cli60r38c00wa01pz2ckkdtcx/tiles/256/{z}/{x}/{y}@2x?access_token=${SECRETS.MAPBOX_TOKEN}`,
-  // `https://api.mapbox.com/styles/v1/byniko/cli4z3nkl00bq01r62l4b47tw/tiles/256/{z}/{x}/{y}@2x?access_token=${SECRETS.MAPBOX_TOKEN}`,
+  // `https://api.mapbox.com/styles/v1/byniko/cli60r38c00wa01pz2ckkdtcx/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.MAPBOX_TOKEN}`,
+  // `https://api.mapbox.com/styles/v1/byniko/cli4z3nkl00bq01r62l4b47tw/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.MAPBOX_TOKEN}`,
   `http://{s}.tile.cloudmade.com/9c844409f5b845ae93ac38388077f90a/997/256/{z}/{x}/{y}.png`,
   {
     tms: true,
